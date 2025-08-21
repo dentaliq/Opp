@@ -1,0 +1,945 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>عالم العطور الفاخرة</title>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #5d3f6a;
+            --secondary-color: #a777e3;
+            --accent-color: #ffc107;
+            --text-color: #2c3e50;
+            --white-color: #fff;
+            --light-bg: #f5f5f5;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Tajawal', sans-serif;
+            direction: rtl;
+            background-color: var(--light-bg);
+            color: var(--text-color);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .header {
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(135deg, #7b4397, #dc2430);
+            background-size: 400% 400%;
+            animation: gradientAnimation 15s ease infinite;
+            color: var(--white-color);
+            text-align: center;
+            padding: 5rem 0 3rem;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+            border-bottom: 5px solid var(--accent-color);
+        }
+
+        @keyframes gradientAnimation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .header h1 {
+            font-family: 'Amiri', serif;
+            font-size: 3.5rem;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.4);
+            position: relative;
+            animation: fadeInDown 1s ease-in-out;
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            padding: 40px;
+            max-width: 1400px;
+            margin: 30px auto;
+        }
+
+        .gallery-item {
+            background-color: var(--white-color);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+            transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.5s ease;
+            opacity: 0;
+            transform: translateY(40px) scale(0.9);
+            cursor: pointer;
+            text-align: center;
+            border: 3px solid transparent;
+            position: relative;
+        }
+
+        .gallery-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border: 3px solid var(--accent-color);
+            border-radius: 20px;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .gallery-item:hover::before {
+            opacity: 1;
+        }
+
+        .gallery-item.show {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-15px) scale(1.03);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 380px;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.05);
+        }
+
+        .product-info {
+            padding: 20px 15px;
+            background-color: var(--light-bg);
+        }
+
+        .product-info h3 {
+            font-family: 'Amiri', serif;
+            font-size: 1.8rem;
+            color: var(--primary-color);
+            margin-bottom: 8px;
+        }
+
+        .product-info .price {
+            font-family: 'Amiri', serif;
+            font-weight: bold;
+            font-size: 1.5rem;
+            color: var(--text-color);
+        }
+
+        /* Lightbox styles - Smaller and more elegant */
+        .lightbox {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.80);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            backdrop-filter: blur(8px);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .lightbox.show {
+            display: flex;
+            opacity: 1;
+        }
+        
+        /* Lightbox content - Smaller and centered */
+        .lightbox-content {
+            background: linear-gradient(145deg, #2c3e50, #34495e);
+            padding: 25px 30px;
+            border-radius: 18px;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.7);
+            position: relative;
+            max-width: 320px;
+            width: 80%;
+            transform: scale(0.80);
+            transition: transform 0.4s cubic-bezier(0.18, 1.25, 0.4, 1);
+            border: 2px solid rgba(255, 193, 7, 0.4);
+            transform-origin: center;
+        }
+
+        .lightbox.show .lightbox-content {
+            transform: scale(1);
+        }
+.lightbox-content {
+    background: linear-gradient(145deg, #2c3e50, #34495e);
+    padding: 25px 30px;
+    border-radius: 18px;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.7);
+    position: relative;
+    max-width: 420px;
+    width: 85%;
+    transform: scale(0.85);
+    transition: transform 0.4s cubic-bezier(0.18, 1.25, 0.4, 1);
+    border: 2px solid rgba(255, 193, 7, 0.4);
+    transform-origin: center;
+
+    /* 👇 أضف هذه للتحكم بالارتفاع */
+    max-height: 70vh;   /* أقصى ارتفاع = 70% من الشاشة */
+    overflow-y: auto;   /* يضيف سكرول إذا المحتوى تجاوز الطول */
+}        .close-btn {
+            position: absolute;
+            top: 12px;
+            right: 15px;
+            font-size: 28px;
+            color: var(--accent-color);
+            cursor: pointer;
+            transition: transform 0.3s ease, color 0.3s ease;
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.2);
+        }
+.lightbox-content {
+    padding-top: 60px; /* المسافة بين الزر والنص */
+}        .close-btn:hover {
+            transform: rotate(90deg) scale(1.1);
+            color: var(--white-color);
+            background: rgba(255, 193, 7, 0.2);
+        }
+
+        .form-container h2 {
+            font-family: 'Amiri', serif;
+            text-align: center;
+            margin-bottom: 20px;
+            color: var(--accent-color);
+            font-size: 1.7rem;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .form-container label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: var(--white-color);
+            font-size: 0.95rem;
+        }
+
+        .form-container input {
+            width: 100%;
+            padding: 12px 15px;
+            margin-bottom: 18px;
+            border: none;
+            border-radius: 10px;
+            font-family: 'Tajawal', sans-serif;
+            background-color: rgba(255, 255, 255, 0.09);
+            color: var(--white-color);
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .form-container input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .form-container input:focus {
+            background-color: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 0 0 2px rgba(255, 193, 7, 0.5);
+            outline: none;
+            border-color: rgba(255, 193, 7, 0.3);
+        }
+
+        /* Updated total price container - smaller and more proportional */
+        .total-price-container {
+            font-size: 1.25rem;
+            font-family: 'Amiri', serif;
+            font-weight: bold;
+            text-align: center;
+            margin: 22px 0;
+            color: var(--accent-color);
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+            padding: 12px 18px;
+            border-radius: 14px;
+            background: rgba(0, 0, 0, 0.25);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+            animation: shadowPulse 3s infinite ease-in-out;
+            border: 1px solid rgba(255, 193, 7, 0.2);
+        }
+
+        @keyframes shadowPulse {
+            0% {
+                box-shadow: 0 0 10px rgba(255, 193, 7, 0.3);
+            }
+            50% {
+                box-shadow: 0 0 18px rgba(255, 193, 7, 0.7), 0 0 25px rgba(255, 193, 7, 0.4);
+            }
+            100% {
+                box-shadow: 0 0 10px rgba(255, 193, 7, 0.3);
+            }
+        }
+
+        /* Highlight the total price */
+        .total-price {
+            color: var(--accent-color);
+            font-size: 1.45rem;
+            margin-right: 8px;
+            letter-spacing: 0.5px;
+        }
+
+        /* Enhanced animated button style */
+        .form-container button {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(90deg, #ffc107, #ff9800);
+            color: #2c3e50;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            box-shadow: 0 6px 15px rgba(255, 193, 7, 0.4);
+            position: relative;
+            overflow: hidden;
+            margin-top: 15px;
+            animation: buttonPulse 2s infinite;
+            font-family: 'Tajawal', sans-serif;
+            letter-spacing: 0.5px;
+        }
+
+        @keyframes buttonPulse {
+            0% {
+                transform: scale(1);
+                box-shadow: 0 6px 15px rgba(255, 193, 7, 0.4);
+            }
+            50% {
+                transform: scale(1.03);
+                box-shadow: 0 8px 20px rgba(255, 193, 7, 0.7), 0 0 30px rgba(255, 193, 7, 0.4);
+            }
+            100% {
+                transform: scale(1);
+                box-shadow: 0 6px 15px rgba(255, 193, 7, 0.4);
+            }
+        }
+
+        .form-container button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transition: 0.5s;
+            animation: buttonShine 2s infinite;
+        }
+
+        @keyframes buttonShine {
+            0% {
+                left: -100%;
+            }
+            100% {
+                left: 100%;
+            }
+        }
+
+        .form-container button:hover {
+            animation: none;
+            transform: scale(1.03) translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255, 193, 7, 0.7), 0 0 30px rgba(255, 193, 7, 0.6);
+        }
+
+        .form-container button:active {
+            transform: scale(0.98) translateY(1px);
+            box-shadow: 0 4px 10px rgba(255, 193, 7, 0.6);
+        }
+
+        .form-container button i {
+            margin-left: 8px;
+            transition: transform 0.3s ease;
+        }
+
+        .form-container button:hover i {
+            transform: translateX(5px);
+        }
+
+        /* Footer styles */
+        .footer {
+            background: var(--primary-color);
+            color: var(--white-color);
+            padding: 30px 0;
+            text-align: center;
+            box-shadow: 0 -6px 20px rgba(0, 0, 0, 0.2);
+            border-top: 5px solid var(--accent-color);
+        }
+
+        .social-links {
+            margin-bottom: 20px;
+        }
+
+        /* New social icon styles */
+        .social-icon {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin: 0 10px;
+            text-decoration: none;
+            color: var(--white-color);
+            font-size: 24px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+        }
+        
+        .social-icon.facebook {
+            background: #3b5998;
+        }
+        
+        .social-icon.instagram {
+            background: #E1306C;
+        }
+        
+        .social-icon.whatsapp {
+            background: #25D366;
+        }
+        
+        .social-icon.tiktok {
+            background: #000;
+        }
+        
+        .social-icon:hover {
+            transform: scale(1.2);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+        }
+        
+        /* Loading indicator */
+        .loading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 2000;
+            display: none;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .spinner {
+            width: 70px;
+            height: 70px;
+            border: 5px solid rgba(255, 193, 7, 0.3);
+            border-radius: 50%;
+            border-top-color: var(--accent-color);
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Success message */
+        .success-message {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: linear-gradient(145deg, #2c3e50, #34495e);
+            color: var(--accent-color);
+            padding: 30px;
+            border-radius: 18px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.7);
+            z-index: 2000;
+            text-align: center;
+            max-width: 400px;
+            width: 80%;
+            animation: lightbox-appear 0.5s cubic-bezier(0.18, 1.25, 0.4, 1);
+            border: 2px solid rgba(255, 193, 7, 0.4);
+        }
+
+        .success-message i {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            color: var(--accent-color);
+            animation: scaleUp 0.5s ease-in-out;
+        }
+
+        @keyframes scaleUp {
+            from { transform: scale(0); }
+            to { transform: scale(1); }
+        }
+
+        .success-message h3 {
+            font-family: 'Amiri', serif;
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+        }
+
+        .success-message p {
+            margin-bottom: 20px;
+            color: var(--white-color);
+        }
+
+        .success-message button {
+            background: linear-gradient(90deg, #ffc107, #ff9800);
+            color: #2c3e50;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 10px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Tajawal', sans-serif;
+        }
+
+        .success-message button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(255, 193, 7, 0.5);
+        }
+
+        /* Confirmation lightbox */
+        .confirmation-lightbox {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.80);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            backdrop-filter: blur(8px);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+        
+        .confirmation-lightbox.show {
+            display: flex;
+            opacity: 1;
+        }
+        
+        .confirmation-content {
+            background: linear-gradient(145deg, #2c3e50, #34495e);
+            padding: 25px 30px;
+            border-radius: 18px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.7);
+            position: relative;
+            max-width: 450px;
+            width: 80%;
+            transform: scale(0.80);
+            transition: transform 0.4s cubic-bezier(0.18, 1.25, 0.4, 1);
+            border: 2px solid rgba(255, 193, 7, 0.4);
+            transform-origin: center;
+            text-align: center;
+        }
+
+        .confirmation-lightbox.show .confirmation-content {
+            transform: scale(1);
+        }
+
+        .confirmation-content h2 {
+            font-family: 'Amiri', serif;
+            margin-bottom: 20px;
+            color: var(--accent-color);
+            font-size: 1.8rem;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .confirmation-details {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 25px;
+            text-align: right;
+            color: var(--white-color);
+        }
+
+        .confirmation-details p {
+            margin-bottom: 10px;
+            padding: 5px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .confirmation-details strong {
+            color: var(--accent-color);
+            margin-left: 8px;
+        }
+
+        .confirmation-buttons {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+        }
+
+        .confirmation-buttons button {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 10px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Tajawal', sans-serif;
+            font-size: 1rem;
+        }
+
+        .confirm-btn {
+            background: linear-gradient(90deg, #4CAF50, #2E7D32);
+            color: white;
+        }
+
+        .cancel-btn {
+            background: linear-gradient(90deg, #f44336, #c62828);
+            color: white;
+        }
+
+        .confirmation-buttons button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .confirmation-buttons button:active {
+            transform: translateY(1px);
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <h1>عالم العطور الفاخرة</h1>
+    </header>
+
+    <main class="gallery">
+    </main>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="social-links">
+                <a href="https://www.facebook.com/yourpage" target="_blank" class="social-icon facebook" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                <a href="https://www.instagram.com/yourprofile" target="_blank" class="social-icon instagram" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                <a href="https://wa.me/9647xxxxxxxx" target="_blank" class="social-icon whatsapp" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                <a href="https://www.tiktok.com/@yourprofile" target="_blank" class="social-icon tiktok" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+            </div>
+            <p>&copy; 2025 عالم العطور الفاخرة. جميع الحقوق محفوظة.</p>
+        </div>
+    </footer>
+
+    <div id="lightbox" class="lightbox">
+        <div class="lightbox-content">
+            <span class="close-btn">&times;</span>
+            <div class="form-container">
+                <h2>أطلب الآن وسوف نتصل بك لتأكيد الطلب</h2>
+                <form id="orderForm">
+                    <input type="hidden" id="productPrice" value="">
+                    <input type="hidden" id="productName" value="">
+
+                    <label for="name">الاسم:</label>
+                    <input type="text" id="name" name="name" required placeholder="ادخل اسمك">
+
+                    <label for="phone">رقم الهاتف:</label>
+                    <input type="tel" id="phone" name="phone" required placeholder="ادخل رقم الهاتف">
+
+                    <label for="quantity">الكمية:</label>
+                    <input type="number" id="quantity" name="quantity" min="1" value="1" required>
+
+                    <label for="address">السكن:</label>
+                    <input type="text" id="address" name="address" required placeholder="ادخل عنوان السكن">
+
+                    <label for="landmark">أقرب نقطة دالة:</label>
+                    <input type="text" id="landmark" name="landmark" required placeholder="مثال: بجانب صيدلية الأمل">
+
+                    <div class="total-price-container">
+                        <span>السعر الإجمالي:</span>
+                        <span id="totalPrice" class="total-price">0 د.ع</span>
+                    </div>
+
+                    <button type="submit"><i class="fas fa-shopping-cart"></i> أطلب الآن</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="loading" id="loading">
+        <div class="spinner"></div>
+    </div>
+
+    <div class="success-message" id="successMessage">
+        <i class="fas fa-check-circle"></i>
+        <h3>تم إرسال طلبك بنجاح!</h3>
+        <p>سنقوم بالاتصال بك في أقرب وقت لتأكيد الطلب</p>
+        <button id="successBtn">موافق</button>
+    </div>
+
+    <div id="confirmationLightbox" class="confirmation-lightbox">
+        <div class="confirmation-content">
+            <h2>تأكيد الطلب</h2>
+            <div class="confirmation-details" id="confirmationDetails">
+                </div>
+            <div class="confirmation-buttons">
+                <button class="confirm-btn" id="confirmOrder"><i class="fas fa-check"></i> تأكيد الطلب</button>
+                <button class="cancel-btn" id="cancelOrder"><i class="fas fa-times"></i> تعديل الطلب</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const gallery = document.querySelector('.gallery');
+            const lightbox = document.getElementById('lightbox');
+            const closeBtn = document.querySelector('.close-btn');
+            const quantityInput = document.getElementById('quantity');
+            const totalPriceSpan = document.getElementById('totalPrice');
+            const orderForm = document.getElementById('orderForm');
+            const loadingIndicator = document.getElementById('loading');
+            const successMessage = document.getElementById('successMessage');
+            const successBtn = document.getElementById('successBtn');
+            const confirmationLightbox = document.getElementById('confirmationLightbox');
+            const confirmationDetails = document.getElementById('confirmationDetails');
+            const confirmOrderBtn = document.getElementById('confirmOrder');
+            const cancelOrderBtn = document.getElementById('cancelOrder');
+
+            // Telegram bot configuration
+            const botToken = '7990751181:AAFiRzbg6-1hTxhQBwZ7uPNPgFKMSwUCd_c';
+            const chatId = '8008792454';
+            
+            // قائمة العطور المحدثة
+            const products = [
+                { name: 'Miaa Dior', image: 'X1.jpg', price: 42500 },
+                { name: 'Very sexy', image: 'X2.jpg', price: 47300 },
+                { name: 'Libre', image: 'X4.jpg', price: 55000 },
+                { name: 'Cucci bloom', image: 'X5.jpg', price: 58750 },
+                { name: 'Cucci bloom', image: 'X6.jpg', price: 61900 },
+                { name: 'عطر العود', image: 'X7.jpg', price: 65400 },
+                { name: 'عطر الياسمين', image: 'X8.jpg', price: 69800 },
+                { name: 'عطر العنبر', image: 'X9.jpg', price: 73250 },
+                { name: 'عطر المسك', image: 'X10.jpg', price: 77600 },
+                { name: 'عطر الليل', image: 'X11.jpg', price: 81450 },
+                { name: 'عطر النهار', image: 'X12.jpg', price: 80900 },
+                { name: 'عطر الربيع', image: 'X13.jpg', price: 89300 },
+                { name: 'عطر الصيف', image: 'X14.jpg', price: 93700 },
+                { name: 'عطر الخريف', image: 'X15.jpg', price: 98150 },
+                { name: 'عطر الشتاء', image: 'X16.jpg', price: 102500 },
+                { name: 'عطر الفرح', image: 'X17.jpg', price: 110000 },
+                { name: 'عطر السعادة', image: 'X18.jpg', price: 145750 },
+                // أضف العطور الجديدة هنا بالترتيب
+                // مثال: { name: 'عطر الشفق', image: 'X19.jpg', price: 150000 },
+            ];
+
+            function createGallery() {
+                products.forEach((product, index) => {
+                    const item = document.createElement('div');
+                    item.className = 'gallery-item';
+
+                    const img = document.createElement('img');
+                    img.src = product.image;
+                    img.alt = product.name;
+                    img.onerror = function() {
+                        this.src = 'https://via.placeholder.com/300x380/5d3f6a/ffffff?text=' + encodeURIComponent(product.name);
+                    };
+
+                    const info = document.createElement('div');
+                    info.className = 'product-info';
+                    
+                    const name = document.createElement('h3');
+                    name.textContent = product.name;
+
+                    const price = document.createElement('div');
+                    price.className = 'price';
+                    price.textContent = `${product.price.toLocaleString('ar-SY')} د.ع`;
+                    
+                    info.appendChild(name);
+                    info.appendChild(price);
+                    item.appendChild(img);
+                    item.appendChild(info);
+                    gallery.appendChild(item);
+
+                    setTimeout(() => {
+                        item.classList.add('show');
+                    }, index * 200);
+
+                    item.addEventListener('click', () => {
+                        showLightbox(product);
+                    });
+                });
+            }
+
+            function showLightbox(product) {
+                document.getElementById('productPrice').value = product.price;
+                document.getElementById('productName').value = product.name;
+
+                quantityInput.value = 1;
+                updateTotalPrice();
+
+                lightbox.classList.add('show');
+            }
+
+            closeBtn.addEventListener('click', () => {
+                lightbox.classList.remove('show');
+            });
+
+            window.addEventListener('click', (e) => {
+                if (e.target === lightbox) {
+                    lightbox.classList.remove('show');
+                }
+            });
+
+            function updateTotalPrice() {
+                const quantity = parseInt(quantityInput.value, 10);
+                const price = parseFloat(document.getElementById('productPrice').value);
+                if (quantity > 0 && price > 0) {
+                    const total = quantity * price;
+                    totalPriceSpan.textContent = `${total.toLocaleString('ar-SY')} د.ع`;
+                } else {
+                    totalPriceSpan.textContent = '0 د.ع';
+                }
+            }
+
+            quantityInput.addEventListener('input', updateTotalPrice);
+
+            // Function to send message to Telegram
+            async function sendToTelegram(message) {
+                const url = `https://api.telegram.org/bot${botToken}/sendMessage`;
+                
+                try {
+                    const response = await fetch(url, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            chat_id: chatId,
+                            text: message,
+                            parse_mode: 'HTML'
+                        })
+                    });
+                    
+                    const data = await response.json();
+                    return data.ok;
+                } catch (error) {
+                    console.error('Error sending message to Telegram:', error);
+                    return false;
+                }
+            }
+
+            orderForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+
+                const data = {
+                    name: document.getElementById('name').value,
+                    phone: document.getElementById('phone').value,
+                    quantity: quantityInput.value,
+                    address: document.getElementById('address').value,
+                    landmark: document.getElementById('landmark').value,
+                    totalPrice: totalPriceSpan.textContent,
+                    productName: document.getElementById('productName').value
+                };
+
+                // عرض صندوق التأكيد
+                showConfirmationLightbox(data);
+            });
+
+            function showConfirmationLightbox(data) {
+                // ملء تفاصيل الطلب في صندوق التأكيد
+                confirmationDetails.innerHTML = `
+                    <p><strong>المنتج:</strong> ${data.productName}</p>
+                    <p><strong>الاسم:</strong> ${data.name}</p>
+                    <p><strong>الهاتف:</strong> ${data.phone}</p>
+                    <p><strong>الكمية:</strong> ${data.quantity}</p>
+                    <p><strong>العنوان:</strong> ${data.address}</p>
+                    <p><strong>نقطة الدالة:</strong> ${data.landmark}</p>
+                    <p><strong>السعر الإجمالي:</strong> ${data.totalPrice}</p>
+                `;
+                
+                // إظهار صندوق التأكيد وإخفاء صندوق الطلب
+                lightbox.classList.remove('show');
+                confirmationLightbox.classList.add('show');
+            }
+
+            confirmOrderBtn.addEventListener('click', async () => {
+                const data = {
+                    name: document.getElementById('name').value,
+                    phone: document.getElementById('phone').value,
+                    quantity: quantityInput.value,
+                    address: document.getElementById('address').value,
+                    landmark: document.getElementById('landmark').value,
+                    totalPrice: totalPriceSpan.textContent,
+                    productName: document.getElementById('productName').value
+                };
+
+                // إخفاء صندوق التأكيد وإظهار مؤشر التحميل
+                confirmationLightbox.classList.remove('show');
+                loadingIndicator.style.display = 'flex';
+
+                // Create message for Telegram
+                const message = `
+                    <b>طلب جديد من عالم العطور الفاخرة</b>
+                    <b>------------------------------</b>
+                    <b>المنتج:</b> ${data.productName}
+                    <b>الاسم:</b> ${data.name}
+                    <b>الهاتف:</b> ${data.phone}
+                    <b>الكمية:</b> ${data.quantity}
+                    <b>العنوان:</b> ${data.address}
+                    <b>نقطة الدالة:</b> ${data.landmark}
+                    <b>السعر الإجمالي:</b> ${data.totalPrice}
+                    <b>وقت الطلب:</b> ${new Date().toLocaleString('ar-SA')}
+                `;
+
+                // Send to Telegram
+                const success = await sendToTelegram(message);
+                
+                // Hide loading indicator
+                loadingIndicator.style.display = 'none';
+
+                if (success) {
+                    successMessage.style.display = 'block';
+                } else {
+                    alert('حدث خطأ في إرسال الطلب. يرجى المحاولة مرة أخرى أو الاتصال بنا مباشرة.');
+                    lightbox.classList.add('show');
+                }
+                
+                orderForm.reset();
+            });
+
+            cancelOrderBtn.addEventListener('click', () => {
+                // العودة إلى نموذج الطلب
+                confirmationLightbox.classList.remove('show');
+                lightbox.classList.add('show');
+            });
+
+            successBtn.addEventListener('click', () => {
+                successMessage.style.display = 'none';
+            });
+
+            createGallery();
+        });
+    </script>
+</body>
+</html>
